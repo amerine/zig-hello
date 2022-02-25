@@ -125,3 +125,22 @@ test "while with break" {
     }
     try expect(sum == 1);
 }
+
+test "for" {
+    const string = [_]u8{'a', 'b', 'c'};
+
+    for (string) |char, idx| {
+        _ = char;
+        _ = idx;
+    }
+
+    for (string) |char| {
+        _ = char;
+    }
+
+    for (string) |_, idx| {
+        _ = idx;
+    }
+
+    for (string) |_| {}
+}
