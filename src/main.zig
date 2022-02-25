@@ -69,3 +69,22 @@ test "arrays" {
     try expect(a.len == 5);
     try expect(b.len == 5);
 }
+
+
+test "if" {
+    const a = true;
+    var x: u16 = 0;
+    if (a) {
+        x += 1;
+    } else {
+        x += 2;
+    }
+    try expect(x == 1);
+}
+
+test "if expression" {
+    const a = true;
+    var x: u16 = 0;
+    x += if (a) 1 else 2;
+    try expect(x == 1);
+}
