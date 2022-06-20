@@ -238,3 +238,11 @@ test "switch expression" {
     };
     try expect(x == 1);
 }
+
+test "runtime safety: out of bounds" {
+    @setRuntimeSafety(false);
+    const a = [3]u8{1, 2, 3};
+    var index: u8 = 5;
+    const b = a[index];
+    _ = b;
+}
