@@ -1,6 +1,14 @@
 const std = @import("std");
 const expect = @import("std").testing.expect;
 
+const FileOpenError = error{
+    AccessDenied,
+    OutOfMemory,
+    FileNotFound,
+};
+
+const AllocationError = error{OutOfMemory};
+
 pub fn main() anyerror!void {
     std.log.info("All your codebase are belong to us.", .{});
 }
@@ -143,4 +151,28 @@ test "for" {
     }
 
     for (string) |_| {}
+}
+
+test "coerce error from subset to superset" {
+    const err: FileOpenError = AllocationError.OutOfMemory;
+    try expect(err == FileOpenError.OutOfMemory);
+}
+
+test "error union" {
+    const maybe_error: AllocationError!u16 = 10;
+    const no_error = maybe_error catch 0;
+
+    try expect(@TypeOf(no_error) == u16);
+    try expect(no_error == 10);
+}
+
+fn failingFunction() error{Oops}!void {
+    return error.Oops;
+}
+
+test "returning an error" {
+    failingFunction() catch |err| {
+        try expect(err == error.Oops);
+        return;
+    };
 }
